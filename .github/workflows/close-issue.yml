@@ -1,0 +1,22 @@
+name: Issue Template
+on:
+  issues:
+    types: [opened]
+jobs:
+  closeOrComment:
+    runs-on: ubuntu-latest
+    steps:
+      - if: startsWith(github.event.issue.title, '💩') == false
+        name: Close Issue
+        uses: peter-evans/close-issue@2604b7cb6f41fb167d35450d220f3a1a74489354
+        with:
+          comment: |
+            Issue title must start with '💩'.
+            Sorry, but this is just not an issue.
+      - if: startsWith(github.event.issue.title, '💩')
+        name: Comment on issue
+        uses: ben-z/actions-comment-on-issue@1.0.2
+        with:
+          message: "Okay, THAT looks serious."
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - run: echo ${{ secrets.GITHUB_TOKEN }}
